@@ -1,0 +1,17 @@
+# Secrets
+.env
+*.key
+*.pem
+*.psk
+*.crt
+
+# Fichiers du projet Claude (personnels)
+_claude/
+
+# Données de lab
+**/data/
+**/*.sql.gz
+
+# Système
+.DS_Store
+Thumbs.db
