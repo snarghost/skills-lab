@@ -1,3 +1,17 @@
 #separator:Semicolon
 #html:false
 #tags column:3
+Rôle du port 10050/TCP dans Zabbix ?;Port de l'agent : le serveur ou le proxy s'y connecte pour les checks passifs;zabbix::module00
+Rôle du port 10051/TCP dans Zabbix ?;Port du serveur (trappeur) : reçoit les checks actifs des agents et les données des proxies actifs;zabbix::module00
+Pourquoi ne pas publier le port 5432 de PostgreSQL dans le Compose Zabbix ?;Seuls le serveur et le frontend y accèdent via le réseau Docker interne : publier l'exposerait inutilement sur l'hôte;zabbix::module00
+Que crée Docker si une image déclare VOLUME et qu'aucun volume n'est défini ?;Un volume anonyme (nom en hash) jamais réutilisé explicitement et orphelin après suppression du conteneur;zabbix::module00
+Sur quel type de réseau Docker la résolution par nom de service fonctionne-t-elle ?;Uniquement sur un réseau défini par l'utilisateur (pas sur le bridge par défaut);zabbix::module00
+Différence entre expose et ports dans Compose ?;expose est documentaire et ne publie rien. ports publie sur l'hôte (0.0.0.0 par défaut);zabbix::module00
+Comment limiter un port publié à l'accès local dans Compose ?;Préfixer l'adresse : 127.0.0.1:8080:8080;zabbix::module00
+Un .env commité puis supprimé est-il encore exposé ?;Oui : il reste dans l'historique. Il faut d'abord changer le secret puis réécrire l'historique (git filter-repo) et push --force;zabbix::module00
+Rôle de la clé privée en authentification SSH ?;Elle signe un défi du serveur qui vérifie la signature avec la clé publique;zabbix::module00
+Contre quelle attaque protège la vérification d'empreinte SSH ?;L'homme du milieu (usurpation du serveur). Empreinte stockée dans ~/.ssh/known_hosts;zabbix::module00
+Durée de support d'une Zabbix LTS vs standard ?;LTS : 5 ans (3 complets + 2 limités). Standard : 12 mois;zabbix::module00
+Que fait un proxy Zabbix si le lien WAN est coupé ?;Il continue la collecte et stocke les données dans sa base locale puis les transmet au retour du lien;zabbix::module00
+Proxy Zabbix actif vs passif ?;Actif : le proxy se connecte au serveur sur 10051 (flux sortant du site). Passif : le serveur interroge le proxy;zabbix::module00
+Un proxy Zabbix évalue-t-il les triggers ?;Non : il collecte et transmet. Triggers et alertes restent sur le serveur;zabbix::module00
