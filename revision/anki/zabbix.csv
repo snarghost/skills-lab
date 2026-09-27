@@ -15,3 +15,18 @@ Durée de support d'une Zabbix LTS vs standard ?;LTS : 5 ans (3 complets + 2 lim
 Que fait un proxy Zabbix si le lien WAN est coupé ?;Il continue la collecte et stocke les données dans sa base locale puis les transmet au retour du lien;zabbix::module00
 Proxy Zabbix actif vs passif ?;Actif : le proxy se connecte au serveur sur 10051 (flux sortant du site). Passif : le serveur interroge le proxy;zabbix::module00
 Un proxy Zabbix évalue-t-il les triggers ?;Non : il collecte et transmet. Triggers et alertes restent sur le serveur;zabbix::module00
+Rôle du serveur Zabbix ?;Collecte (pollers) et réception (trappers), évaluation des triggers, actions et alertes, housekeeping. Seul composant qui juge et alerte;zabbix::module01
+Le frontend Zabbix tombe : que se passe-t-il ?;Collecte, triggers et alertes continuent. Seules la consultation, l'administration et l'API sont perdues;zabbix::module01
+Conséquence d'une base PostgreSQL indisponible ?;Le serveur collecte un temps (cache de configuration et history cache) puis perd des valeurs. Plus d'événements ni d'alertes fiables pour tout le périmètre;zabbix::module01
+History vs trends ?;History = valeurs brutes gardées peu de temps. Trends = agrégats horaires min avg max count des items numériques gardés longtemps. Arbitrage volume et performance de la base;zabbix::module01
+Poller vs trapper ?;Poller = processus qui va chercher la donnée (le serveur initie). Trapper = processus qui reçoit la donnée sur 10051 (agents actifs, proxies actifs, zabbix_sender, frontend);zabbix::module01
+Comment savoir qu'il manque des pollers ?;Item interne zabbix[process,poller,avg,busy] au-dessus de 75 %. En 7.0 les pollers agent HTTP et SNMP sont asynchrones;zabbix::module01
+Port 10050 vs port 10051 ?;10050/TCP = l'agent écoute (checks passifs). 10051/TCP = le serveur ou le proxy écoute (agents actifs, proxies actifs, frontend);zabbix::module01
+Quels items exigent le mode actif de l'agent ?;log[], logrt[] et eventlog[] : l'agent suit le fichier et mémorise sa position. Les items texte classiques fonctionnent en passif;zabbix::module01
+Fermer le port 10050 sur les hôtes supervisés ?;Casse tous les checks passifs. Valable si tout passe en actif (StartAgents=0) : aucun port en écoute. Disponibilité suivie par heartbeat en 7.0;zabbix::module01
+Ce que le proxy Zabbix ne fait pas ?;Il n'évalue pas les triggers et n'envoie pas d'alertes. Il collecte, tamponne et remonte les données au serveur;zabbix::module01
+Proxy actif vs proxy passif ?;Actif (ProxyMode=0) : le proxy se connecte au 10051 du serveur, flux sortant du site. Passif (ProxyMode=1) : le serveur se connecte au 10051 du proxy;zabbix::module01
+Paramètres du tampon d'un proxy Zabbix 7.0 ?;ProxyOfflineBuffer (1 h par défaut, 720 h max) et ProxyBufferMode disk, memory ou hybrid. Prévoir de la marge et vérifier le disque;zabbix::module01
+Lien site-siège coupé 2 h avec un proxy actif ?;Pas de perte si la coupure reste sous ProxyOfflineBuffer. Alertes du site en retard. nodata() ne se déclenche pas, seule l'alerte proxy injoignable sort;zabbix::module01
+Point unique de défaillance le plus grave d'une architecture Zabbix ?;La base PostgreSQL puis le serveur : ils touchent tout le périmètre sans compensation. Le lien d'un site est compensé par le tampon du proxy;zabbix::module01
+Poller Centreon vs poller Zabbix ?;Centreon : serveur de collecte distant, équivalent du proxy Zabbix. Zabbix : processus interne du serveur ou du proxy;zabbix::module01
