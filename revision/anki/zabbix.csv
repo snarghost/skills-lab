@@ -30,3 +30,17 @@ Paramètres du tampon d'un proxy Zabbix 7.0 ?;ProxyOfflineBuffer (1 h par défau
 Lien site-siège coupé 2 h avec un proxy actif ?;Pas de perte si la coupure reste sous ProxyOfflineBuffer. Alertes du site en retard. nodata() ne se déclenche pas, seule l'alerte proxy injoignable sort;zabbix::module01
 Point unique de défaillance le plus grave d'une architecture Zabbix ?;La base PostgreSQL puis le serveur : ils touchent tout le périmètre sans compensation. Le lien d'un site est compensé par le tampon du proxy;zabbix::module01
 Poller Centreon vs poller Zabbix ?;Centreon : serveur de collecte distant, équivalent du proxy Zabbix. Zabbix : processus interne du serveur ou du proxy;zabbix::module01
+À quoi sert $$ dans un healthcheck Compose ?;Échappe le $ : la variable est évaluée dans le conteneur à l'exécution. Avec un seul $ Compose l'interpole à la lecture du fichier depuis .env ou le shell;zabbix::module02
+Où Compose cherche-t-il le fichier .env ?;Dans le répertoire du projet (celui du docker-compose.yml). Lancé ailleurs : variables vides et projet invalide;zabbix::module02
+Base postgres sans montage de volume : que se passe-t-il après down puis up ?;L'image déclare VOLUME donc un volume anonyme est créé. Au up suivant nouveau volume anonyme : base vide et ancien volume orphelin;zabbix::module02
+docker compose down vs down -v ?;down supprime conteneurs et réseaux mais garde les volumes nommés. down -v supprime aussi les volumes : données perdues;zabbix::module02
+Limite de depends_on avec condition service_healthy ?;N'agit qu'au docker compose up. Si la base tombe ensuite c'est le serveur Zabbix qui gère sa reconnexion;zabbix::module02
+Comment le serveur Zabbix sait-il si le schéma existe ?;Il lit la table dbversion au démarrage : création si base vide, vérification ou mise à jour du schéma sinon;zabbix::module02
+Flux sortants du frontend Zabbix ?;Vers PostgreSQL 5432/TCP (lecture et écriture directes de la config et de l'historique) et vers le serveur 10051/TCP (état, file d'attente, test d'items);zabbix::module02
+Serveur Zabbix arrêté : que montre le frontend ?;Des données figées lues en base. Plus de collecte, plus d'évaluation des triggers, plus d'alertes. Bandeau et Zabbix server is running : No;zabbix::module02
+Que signifie 5432/tcp dans la colonne PORTS de docker compose ps ?;Port exposé (EXPOSE de l'image) : documentation seulement. Un port publié s'afficherait 0.0.0.0:5432->5432/tcp;zabbix::module02
+8080:8080 vs 127.0.0.1:8080:8080 ?;Forme courte : écoute sur toutes les interfaces (0.0.0.0). Avec 127.0.0.1 : boucle locale seulement;zabbix::module02
+Pourquoi UFW ne protège-t-il pas un port publié par Docker ?;Docker insère ses propres règles iptables traitées avant celles de UFW. D'où le réflexe de lier explicitement l'adresse de publication;zabbix::module02
+Pourquoi le frontend Zabbix écoute-t-il sur 8080 dans le conteneur ?;nginx tourne en non-root (moindre privilège). Les ports inférieurs à 1024 exigent root ou la capacité CAP_NET_BIND_SERVICE;zabbix::module02
+Quand publier le port 10051/TCP du serveur Zabbix ?;Quand un client hors réseau Docker initie la connexion : proxy actif distant, agent actif, zabbix_sender. Sur une IP d'interface filtrée (127.0.0.1 inaccessible à distance);zabbix::module02
+Réflexe sur le compte Admin/zabbix en production ?;Changer le mot de passe dès l'installation puis le désactiver au profit de comptes nominatifs avec rôles;zabbix::module02
