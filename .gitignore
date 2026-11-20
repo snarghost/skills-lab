@@ -15,3 +15,4 @@ _claude/
 # Système
 .DS_Store
 Thumbs.db
+*.secret
