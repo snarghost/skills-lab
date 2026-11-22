@@ -1,22 +1,20 @@
-# Zabbix — Supervision d'infrastructure
+# Zabbix — supervision d'infrastructure
+> Lab Zabbix 7.0 LTS (Long Term Support) sous Docker Compose. Il sera intégré au projet de supervision de Kerlab (P3, dépôt `monitoring-zabbix`).
 
-> Parcours en cours.
+## Périmètre actuel
+- Serveur Zabbix 7.0 avec PostgreSQL 16 et interface web Nginx.
+- Interface web publiée uniquement en local (`127.0.0.1:8080`).
+- Données persistées dans un volume nommé.
 
-## Objectif
-Déployer et exploiter une supervision Zabbix 7.0 LTS en lab : serveur, agents, SNMP, proxy multi-site, alerting et sécurisation.
-
-## Architecture du lab
-<schéma à ajouter dans docs/img/>
-
-## Compétences démontrées
-- 
+## Architecture
+Architecture cible multi-sites et choix techniques : [docs/architecture.md](docs/architecture.md).
 
 ## Lancer le lab
 ```bash
 cd lab
-cp .env.example .env   # adapter les valeurs
+cp .env.example .env   # renseigner les mots de passe
 docker compose up -d
 ```
 
-## Notes par module
-Voir [notes/](notes/).
+## Évolutions
+Les agents Windows et Linux, SNMP (Simple Network Management Protocol), le proxy à l'agence, l'alerting et le chiffrement des flux seront réalisés dans le dépôt `monitoring-zabbix` (P3).

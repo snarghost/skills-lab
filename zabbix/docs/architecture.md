@@ -8,7 +8,7 @@ flowchart LR
     users["Utilisateurs / API"]
 
     subgraph siege["Siège"]
-        rp["Reverse proxy Nginx<br/>HTTPS (module 8)"]
+        rp["Reverse proxy Nginx<br/>HTTPS (évolution prévue)"]
         web["Frontend Zabbix<br/>PHP + Nginx"]
         srv["Serveur Zabbix 7.0<br/>triggers, actions, alertes"]
         db[("PostgreSQL<br/>config, history, trends")]
@@ -54,7 +54,7 @@ flowchart LR
 - **Le serveur central garde seul l'intelligence** : évaluation des triggers et envoi des alertes.
 - **PostgreSQL = point critique** : supervisée, sauvegardée ; sans base, plus d'alertes fiables.
 - **Reverse proxy devant le frontend** : terminaison TLS, frontend non exposé directement.
-- **Chiffrement PSK** (module 8) sur les flux agents et proxy, sur les mêmes ports.
+- **Chiffrement PSK** (évolution prévue) sur les flux agents et proxy, sur les mêmes ports.
 
 ## Évolutions possibles (hors lab)
 
